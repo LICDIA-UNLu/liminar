@@ -108,10 +108,13 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 repo = "{ORG}/{nombre}"
 tok = AutoTokenizer.from_pretrained(repo, revision="{version}")
-modelo = AutoModelForCausalLM.from_pretrained(repo, revision="{version}", dtype="auto", device_map="auto")
+modelo = AutoModelForCausalLM.from_pretrained(
+    repo, revision="{version}", dtype="auto", device_map="auto")
 
-mensajes = [{{"role": "user", "content": "¿Qué establece la Ley de Educación Superior sobre la autonomía universitaria?"}}]
-entrada = tok.apply_chat_template(mensajes, add_generation_prompt=True, return_tensors="pt").to(modelo.device)
+mensajes = [{{"role": "user",
+             "content": "¿Qué establece la Ley de Educación Superior sobre la autonomía universitaria?"}}]
+entrada = tok.apply_chat_template(
+    mensajes, add_generation_prompt=True, return_tensors="pt").to(modelo.device)
 salida = modelo.generate(entrada, max_new_tokens=400)
 print(tok.decode(salida[0, entrada.shape[1]:], skip_special_tokens=True))
 ```
