@@ -1,0 +1,47 @@
+site_name: Liminar
+site_description: Modelos de lenguaje abiertos para la normativa universitaria argentina
+site_url: https://licdia-unlu.github.io/liminar/
+repo_url: https://github.com/LICDIA-UNLu/liminar
+repo_name: LICDIA-UNLu/liminar
+copyright: LICDIA - Universidad Nacional de Luján
+
+theme:
+  name: material
+  language: es
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue grey
+      toggle:
+        icon: material/weather-night
+        name: Modo oscuro
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue grey
+      toggle:
+        icon: material/weather-sunny
+        name: Modo claro
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+nav:
+  - Inicio: index.md
+  - Modelos: modelos.md
+  - Uso: uso.md
+  - Receta para universidades: receta.md
+  - Cómo se hizo:
+      - Corpus: corpus.md
+      - Datos de entrenamiento: datos.md
+      - Entrenamiento: entrenamiento.md
+      - Evaluación: evaluacion.md
+      - Cómputo: computo.md

@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "liminar"
+version = "2026.11"
+description = "Modelos de lenguaje abiertos para la normativa universitaria argentina: corpus, datos, entrenamiento y evaluación"
+readme = "README.md"
+license = "Apache-2.0"
+authors = [{ name = "LICDIA - Universidad Nacional de Luján", email = "licdia@unlu.edu.ar" }]
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.9",
+    "transformers>=5.0",
+    "peft>=0.15",
+    "safetensors",
+    "numpy",
+    "pandas",
+]
+
+[project.optional-dependencies]
+corpus = ["requests", "beautifulsoup4", "openpyxl", "pymupdf", "pillow"]
+docs = ["mkdocs<2", "mkdocs-material>=9.5"]
+
+[project.urls]
+Documentación = "https://licdia-unlu.github.io/liminar"
+Código = "https://github.com/LICDIA-UNLu/liminar"
+Modelos = "https://huggingface.co/LICDIA-UNLu"
+
+[tool.setuptools.packages.find]
+include = ["liminar*"]

@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "Si usa Liminar, cítelo con estos datos."
+title: "Liminar: modelos de lenguaje abiertos para la normativa universitaria argentina"
+type: software
+authors:
+  - name: "LICDIA - Universidad Nacional de Luján"
+    website: "https://licdia.unlu.edu.ar"
+  - family-names: "Fernández"
+    given-names: "Juan Manuel"
+    affiliation: "LICDIA - Universidad Nacional de Luján"
+repository-code: "https://github.com/LICDIA-UNLu/liminar"
+url: "https://licdia-unlu.github.io/liminar"
+license: Apache-2.0
+version: "2026.11"
+keywords:
+  - modelos de lenguaje
+  - normativa universitaria
+  - español de la Argentina
+  - ajuste fino
