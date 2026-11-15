@@ -11,7 +11,8 @@ pertenece a ninguna de las familias evaluadas (Llama 3.3 70B), siempre el mismo.
 | MMMLU ES-LA (1.026 preguntas, 18 por materia) | conocimiento general | exactitud por la probabilidad de cada letra |
 | m-ArenaHard ES (200 consignas) | capacidad general en consignas abiertas | el juez compara la respuesta ajustada con la del base, en los dos órdenes |
 
-El benchmark de normativa sale de documentos que no entraron al entrenamiento. MMMLU ES-LA es la traducción profesional
+Las preguntas del benchmark de normativa no entraron al entrenamiento, pero los documentos de los que salen sí (ver
+[Partición](datos.md#particion)). MMMLU ES-LA es la traducción profesional
 de MMLU al español de Latinoamérica publicada por OpenAI; m-ArenaHard es la versión multilingüe de Arena-Hard publicada
 por Cohere.
 

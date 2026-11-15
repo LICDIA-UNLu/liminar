@@ -141,15 +141,41 @@ def opcion(a):
     print(f'{a.nombre}: exactitud {100 * sum(f["acierto"] for f in filas) / len(filas):.1f} % en {len(filas)} preguntas')
 
 
+def leer_tolerante(ruta):
+    """Como leer, pero salteando una última línea cortada (un corte del piloto a mitad de una escritura)."""
+    filas = []
+    if os.path.exists(ruta):
+        for l in open(ruta, encoding='utf-8'):
+            try:
+                filas.append(json.loads(l))
+            except json.JSONDecodeError:
+                pass
+    return filas
+
+
 def abiertas(a):
+    """Retoma: escribe cada dos lotes, así un piloto que termina a mitad de camino no pierde lo generado."""
     cs = leer(a.consignas)
     os.makedirs(a.salida, exist_ok=True)
     ruta = os.path.join(a.salida, f'{a.nombre}.jsonl')
+    previas = leer_tolerante(ruta)
+    hechas = {r['id'] for r in previas}
+    faltan = [c for c in cs if c['id'] not in hechas]
+    if not faltan:
+        print(f'{a.nombre}: ya estaban las {len(cs)} respuestas')
+        return
+    escribir(ruta, previas)   # reescribe sin la línea cortada, si la había
     tok, m = cargar(a.modelo, a.adaptador)
-    textos = [plantilla(tok, c['consigna'], a.modelo) for c in cs]
-    resp, tokens, segundos = generar(tok, m, textos, a.max_nuevos, a.lote)
-    escribir(ruta, [{'id': c['id'], 'modelo': a.nombre, 'respuesta': r} for c, r in zip(cs, resp)])
-    print(f'{a.nombre}: {len(resp)} respuestas, {tokens} tokens en {segundos:.0f} s')
+    tokens = segundos = 0
+    for i in range(0, len(faltan), 2 * a.lote):
+        parte = faltan[i:i + 2 * a.lote]
+        resp, tk, sg = generar(tok, m, [plantilla(tok, c['consigna'], a.modelo) for c in parte], a.max_nuevos, a.lote)
+        tokens, segundos = tokens + tk, segundos + sg
+        with open(ruta, 'a', encoding='utf-8') as out:
+            out.write(''.join(json.dumps({'id': c['id'], 'modelo': a.nombre, 'respuesta': r}, ensure_ascii=False) + '\n'
+                              for c, r in zip(parte, resp)))
+        print(f'{a.nombre}: {len(hechas) + i + len(parte)}/{len(cs)} respuestas', flush=True)
+    print(f'{a.nombre}: {len(faltan)} respuestas nuevas, {tokens} tokens en {segundos:.0f} s')
 
 
 def duelo(a):

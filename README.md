@@ -1,4 +1,17 @@
-# Liminar
+<p align="center">
+  <img src="docs/assets/licdia.png" width="110" alt="LICDIA">
+</p>
+
+<h1 align="center">Liminar</h1>
+
+<p align="center"><b>Modelos de lenguaje abiertos del sistema universitario argentino</b></p>
+
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/licencia-Apache%202.0-1f4e8c" alt="Licencia Apache 2.0"></a>
+  <a href="https://licdia-unlu.github.io/liminar"><img src="https://img.shields.io/badge/documentaci%C3%B3n-licdia--unlu.github.io-0e7490" alt="Documentación"></a>
+  <a href="https://huggingface.co/LICDIA-UNLu"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20modelos-LICDIA--UNLu-f2b705" alt="Modelos en Hugging Face"></a>
+  <a href="https://licdia.unlu.edu.ar"><img src="https://img.shields.io/badge/LICDIA-UNLu-16233f" alt="LICDIA - UNLu"></a>
+</p>
 
 Liminar es una familia de modelos de lenguaje abiertos del sistema universitario argentino. Están adaptados a su
 normativa, sus instituciones y su vida académica, y al español formal de la Argentina, y se publican con licencia
@@ -38,10 +51,13 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 repo = "LICDIA-UNLu/Liminar-Qwen3.5-9B"
 tok = AutoTokenizer.from_pretrained(repo, revision="v2026.11")
-modelo = AutoModelForCausalLM.from_pretrained(repo, revision="v2026.11", dtype="auto", device_map="auto")
+modelo = AutoModelForCausalLM.from_pretrained(
+    repo, revision="v2026.11", dtype="auto", device_map="auto")
 
-mensajes = [{"role": "user", "content": "¿Qué establece la Ley de Educación Superior sobre la autonomía universitaria?"}]
-entrada = tok.apply_chat_template(mensajes, add_generation_prompt=True, return_tensors="pt").to(modelo.device)
+mensajes = [{"role": "user",
+             "content": "¿Qué establece la Ley de Educación Superior sobre la autonomía universitaria?"}]
+entrada = tok.apply_chat_template(
+    mensajes, add_generation_prompt=True, return_tensors="pt").to(modelo.device)
 salida = modelo.generate(entrada, max_new_tokens=400)
 print(tok.decode(salida[0, entrada.shape[1]:], skip_special_tokens=True))
 ```

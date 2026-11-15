@@ -1,0 +1,16 @@
+/* Colores de LICDIA: azul noche y celeste */
+:root > * {
+  --md-primary-fg-color: #16233f;
+  --md-primary-fg-color--light: #2b3e66;
+  --md-primary-fg-color--dark: #0d1629;
+  --md-accent-fg-color: #1fa3c4;
+  --md-accent-fg-color--transparent: rgba(31, 163, 196, 0.1);
+}
+[data-md-color-scheme="slate"] {
+  --md-hue: 222;
+  --md-typeset-a-color: #5cc6e0;
+}
+.md-header__button.md-logo img { height: 1.8rem; border-radius: 50%; }
+.liminar-portada { text-align: center; margin: 0.5rem 0 1.6rem; }
+.liminar-portada img { width: 110px; border-radius: 50%; }
+.liminar-portada .lema { font-size: 1.15rem; opacity: 0.85; margin-top: 0.4rem; }

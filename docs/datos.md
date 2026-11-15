@@ -27,5 +27,7 @@ uso de lo recuperado (RAFT, Zhang et al., 2024). Los documentos de la evaluació
 
 ## Partición
 
-Los documentos del benchmark se apartan antes de generar: ninguna de sus preguntas ni de sus fragmentos entra al
-entrenamiento.
+Las 300 preguntas del benchmark de normativa quedan afuera del entrenamiento y forman la validación; también se saca
+cualquier conversación de entrenamiento que repita exactamente una de esas preguntas. Los documentos de los que salen sí
+entran al entrenamiento: el benchmark mide si el modelo responde, sin documentos a la vista, sobre lo que aprendió del
+corpus.
