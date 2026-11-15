@@ -1,7 +1,8 @@
 # Liminar
 
 <div class="liminar-portada" markdown>
-![LICDIA](assets/licdia.png)
+![Liminar](assets/liminar-logotipo-claro.png#only-light)
+![Liminar](assets/liminar-logotipo-oscuro.png#only-dark)
 
 <div class="lema">Modelos de lenguaje abiertos del sistema universitario argentino</div>
 </div>

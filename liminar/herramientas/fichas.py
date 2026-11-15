@@ -89,6 +89,10 @@ tags:
 - normativa
 ---
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/LICDIA-UNLu/liminar/main/docs/assets/liminar-icono-512.png" width="96" alt="Liminar">
+</p>
+
 # {nombre}
 
 {nombre} es un modelo de la familia **Liminar**: modelos de lenguaje abiertos del sistema universitario argentino,

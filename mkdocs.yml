@@ -8,8 +8,8 @@ copyright: LICDIA - Universidad Nacional de Luján
 theme:
   name: material
   language: es
-  logo: assets/licdia.png
-  favicon: assets/licdia.png
+  logo: assets/liminar-marca-oscuro.svg
+  favicon: assets/liminar-icono-64.png
   features:
     - navigation.sections
     - navigation.top

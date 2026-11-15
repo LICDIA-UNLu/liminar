@@ -1,8 +1,9 @@
 <p align="center">
-  <img src="docs/assets/licdia.png" width="110" alt="LICDIA">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/liminar-logotipo-oscuro.png">
+    <img src="docs/assets/liminar-logotipo-claro.png" width="360" alt="Liminar">
+  </picture>
 </p>
-
-<h1 align="center">Liminar</h1>
 
 <p align="center"><b>Modelos de lenguaje abiertos del sistema universitario argentino</b></p>
 
