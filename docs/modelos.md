@@ -9,6 +9,7 @@
 | Liminar-Mistral-Small-3.2-24B | `mistralai/Mistral-Small-3.2-24B-Instruct-2506` | LoRA, rango 256 |
 | Liminar-Qwen3.5-27B | `Qwen/Qwen3.5-27B` | LoRA, rango 256 |
 | Liminar-Gemma-4-31B | `google/gemma-4-31B-it` | LoRA, rango 256 |
+| Liminar-Qwen3.5-122B-A10B | `Qwen/Qwen3.5-122B-A10B` | LoRA, rango 256 |
 
 Los modelos están en la organización [LICDIA-UNLu](https://huggingface.co/LICDIA-UNLu) de Hugging Face. Todas las
 bases tienen licencia Apache 2.0 y los modelos Liminar mantienen esa licencia.

@@ -25,6 +25,7 @@ El nombre remite al Manifiesto Liminar de la Reforma Universitaria de 1918.
 | [Liminar-Mistral-Small-3.2-24B](https://huggingface.co/LICDIA-UNLu/Liminar-Mistral-Small-3.2-24B) | Mistral Small 3.2 24B | LoRA |
 | [Liminar-Qwen3.5-27B](https://huggingface.co/LICDIA-UNLu/Liminar-Qwen3.5-27B) | Qwen 3.5 27B | LoRA |
 | [Liminar-Gemma-4-31B](https://huggingface.co/LICDIA-UNLu/Liminar-Gemma-4-31B) | Gemma 4 31B | LoRA |
+| [Liminar-Qwen3.5-122B-A10B](https://huggingface.co/LICDIA-UNLu/Liminar-Qwen3.5-122B-A10B) | Qwen 3.5 122B-A10B (MoE) | LoRA |
 
 Todas las bases tienen licencia Apache 2.0. Las versiones se publican como etiquetas de cada repositorio, con el formato
 `vAAAA.MM` (por ejemplo `v2026.11`); la rama `main` apunta a la versión recomendada.
