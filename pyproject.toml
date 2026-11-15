@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "liminar"
 version = "2026.11"
-description = "Modelos de lenguaje abiertos para la normativa universitaria argentina: corpus, datos, entrenamiento y evaluación"
+description = "Modelos de lenguaje abiertos del sistema universitario argentino: corpus, datos, entrenamiento y evaluación"
 readme = "README.md"
 license = "Apache-2.0"
 authors = [{ name = "LICDIA - Universidad Nacional de Luján", email = "licdia@unlu.edu.ar" }]

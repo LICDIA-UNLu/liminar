@@ -20,4 +20,6 @@ documento conserva su procedencia: fuente, formato original (HTML, PDF u OCR), l
 | CONICET | CC BY 2.5 AR |
 | Consejo Interuniversitario Nacional (CIN) | con permiso del CIN |
 
-Las guías de argentina.gob.ar aportan el registro de lenguaje claro de la administración pública argentina.
+Estas fuentes suman prosa institucional y periodística sobre la vida universitaria: páginas de educación y noticias de
+argentina.gob.ar, noticias del CONICET y noticias y páginas del CIN. Aportan además el registro de lenguaje claro de
+la administración pública argentina.

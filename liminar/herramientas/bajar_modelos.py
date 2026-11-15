@@ -2,7 +2,7 @@
 """Baja modelos de Hugging Face a $LIMINAR_MODELOS/<nombre> (por omisión, modelos/<nombre>).
 
 Sin Xet (por el proxy las descargas se traban) y con las variables del proxy también en mayúsculas.
-Retoma lo que falte. Corre como spec de un piloto, no en el nodo de login.
+Retoma lo que falte. En un clúster, conviene correrlo en un nodo de cómputo y no en el de acceso.
 
 Uso:
     python -m liminar.herramientas.bajar_modelos google/gemma-4-E4B-it google/gemma-4-12B-it ...
@@ -20,6 +20,10 @@ for v in ('https_proxy', 'http_proxy', 'no_proxy'):
 from huggingface_hub import snapshot_download  # noqa: E402
 
 DESTINO = os.environ.get('LIMINAR_MODELOS', 'modelos')
+
+if len(sys.argv) < 2 or sys.argv[1] in ('-h', '--help'):
+    print(__doc__)
+    sys.exit(0)
 
 for repo in sys.argv[1:]:
     d = os.path.join(DESTINO, repo.split('/')[-1])

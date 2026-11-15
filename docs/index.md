@@ -1,13 +1,15 @@
 # Liminar
 
-Liminar es una familia de modelos de lenguaje abiertos adaptados a la normativa universitaria argentina y al español
-formal de la Argentina. La desarrolla el Laboratorio de Investigación en Ciencia de Datos & Inteligencia Artificial
-(LICDIA) de la Universidad Nacional de Luján. El nombre remite al Manifiesto Liminar de la Reforma Universitaria de 1918.
+Liminar es una familia de modelos de lenguaje abiertos del sistema universitario argentino. Están adaptados a su
+normativa, sus instituciones y su vida académica, y al español formal de la Argentina, y se publican con licencia
+abierta para que cualquier persona o institución pueda usarlos. La desarrolla el Laboratorio de Investigación en Ciencia
+de Datos & Inteligencia Artificial (LICDIA) de la Universidad Nacional de Luján. El nombre remite al Manifiesto Liminar
+de la Reforma Universitaria de 1918.
 
 ## Dos capas
 
-La **capa nacional** son los modelos publicados: cada uno parte de un modelo abierto y se ajusta con un corpus curado
-de normativa universitaria nacional y de fuentes públicas.
+La **capa nacional** son los modelos publicados: cada uno parte de un modelo abierto y se ajusta con la normativa
+universitaria nacional curada y con textos públicos sobre la vida universitaria.
 
 La **capa de cada universidad** es un adaptador LoRA que cada institución entrena con sus propios actos sobre un modelo
 Liminar, siguiendo la [receta](receta.md). Esa capa queda en la universidad.
