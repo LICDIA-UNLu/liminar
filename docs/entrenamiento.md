@@ -2,8 +2,11 @@
 
 - **Ajuste completo** para los modelos de hasta 12B y **LoRA de rango 256** para los de 24B a 31B, todos con FSDP
   sobre los 8 tiles de un nodo.
-- **Programa:** una época de solo preguntas y respuestas y después cuatro épocas con todos los datos. Se guarda un
-  modelo por época.
+- **Datos:** los mismos para todos los modelos
+  ([LICDIA-UNLu/liminar-entrenamiento](https://huggingface.co/datasets/LICDIA-UNLu/liminar-entrenamiento)). En cada
+  época los pedidos generales entran cuatro veces y los ejemplos de la Ley de Educación Superior, dos.
+- **Programa:** una época de solo preguntas y respuestas y después cuatro épocas con todos los datos (dos en el
+  Qwen 3.5 122B-A10B). Se guarda un modelo por época.
 - **Lotes por tokens:** lotes de hasta 2.048 tokens con relleno y acumulación de 2. Un ejemplo más largo forma su propio
   lote; esos lotes largos se agrupan en pasos enteros para que ningún tile espere a otro.
 - **Pérdida** solo sobre la respuesta, con los logits calculados únicamente en esas posiciones.
