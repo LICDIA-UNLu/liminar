@@ -11,6 +11,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/licencia-Apache%202.0-1f4e8c" alt="Licencia Apache 2.0"></a>
   <a href="https://licdia-unlu.github.io/liminar"><img src="https://img.shields.io/badge/documentaci%C3%B3n-licdia--unlu.github.io-0e7490" alt="Documentación"></a>
   <a href="https://huggingface.co/LICDIA-UNLu"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20modelos-LICDIA--UNLu-f2b705" alt="Modelos en Hugging Face"></a>
+  <a href="https://huggingface.co/datasets/LICDIA-UNLu/normativa-universitaria-argentina"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20dataset-normativa%20universitaria-f2b705" alt="Dataset en Hugging Face"></a>
   <a href="https://licdia.unlu.edu.ar"><img src="https://img.shields.io/badge/LICDIA-UNLu-16233f" alt="LICDIA - UNLu"></a>
 </p>
 

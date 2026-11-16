@@ -9,7 +9,11 @@ documento conserva su procedencia: fuente, formato original (HTML, PDF u OCR), l
   del sitio de Infoleg.
 - **Curación:** las normas candidatas se revisaron a mano con un criterio explícito: entra la norma que trata sobre una
   universidad o sobre el sistema universitario; queda afuera la que solo la menciona de costado y la que se refiere a
-  personas. La lista curada se publica junto con el corpus.
+  personas.
+- **Dataset:** las 1.886 normas curadas, con sus atributos, sus vínculos, el texto completo cuando Infoleg lo tiene y
+  los anexos, están publicadas en Hugging Face como
+  [LICDIA-UNLu/normativa-universitaria-argentina](https://huggingface.co/datasets/LICDIA-UNLu/normativa-universitaria-argentina)
+  (CC BY 4.0).
 - **Anexos escaneados:** los anexos en PDF sin texto se transcribieron con OCR usando Qwen 3.5 9B.
 
 ## Fuentes abiertas
