@@ -49,8 +49,10 @@ fi
 if [[ $ETAPAS == *" duelos "* ]]; then
 echo "=== generales: duelos de m-ArenaHard ES, ajustado contra base · $(date '+%T')"
 B=$N/benchmarks
-PARES=$(for m in ministral-3-8b gemma-4-e4b qwen3.5-9b gemma-4-12b mistral-small-3.2-24b qwen3.5-27b gemma-4-31b; do
-          for r in v2r1 v2r2; do printf 'base-%s:liminar-%s-%s,' $m $r $m; done; done)
+# cada modelo ajustado (o interpolado) que tenga respuestas abiertas, contra su base
+PARES=$(for f in $B/abiertas/liminar-*.jsonl; do n=$(basename "$f" .jsonl)
+          for m in ministral-3-8b gemma-4-e4b qwen3.5-9b gemma-4-12b mistral-small-3.2-24b qwen3.5-27b gemma-4-31b; do
+            if [[ $n == *-$m ]]; then printf 'base-%s:%s,' $m "$n"; fi; done; done)
 bash slurm/con_vigia.sh "$REG" 40 6 $PY -m liminar.evaluacion.generales duelo --respuestas $B/abiertas \
   --pares "${PARES%,}" --consignas $B/arenahard-es-200.jsonl --juez $JUEZ --salida $B/duelos --lote 2
 $PY -m liminar.evaluacion.generales resumen --opcion $B/opcion --duelos $B/duelos
