@@ -51,7 +51,7 @@ nav:
   - Modelos: modelos.md
   - Uso: uso.md
   - Receta para universidades: receta.md
-  - Cómo se hizo:
+  - Método:
       - Corpus: corpus.md
       - Datos de entrenamiento: datos.md
       - Entrenamiento: entrenamiento.md

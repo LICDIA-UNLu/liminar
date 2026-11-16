@@ -86,7 +86,7 @@ Los scripts de `slurm` leen las rutas de variables de entorno: `LIMINAR_DATOS` (
 La documentación completa (corpus, generación de datos, entrenamiento, evaluación y la receta para universidades) está
 en <https://licdia-unlu.github.io/liminar>.
 
-## Cómo citar
+## Cita
 
 Ver [`CITATION.cff`](CITATION.cff).
 
