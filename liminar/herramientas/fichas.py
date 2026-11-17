@@ -2,13 +2,15 @@
 """Fichas de los modelos para Hugging Face (README.md de cada repositorio), en español con un resumen en inglés.
 
 Los datos fijos de cada modelo están en MODELOS. Los resultados de la evaluación entran desde un JSON opcional con la
-forma:
+forma que escribe liminar.evaluacion.resultados (un modelo, o {clave: resultados} con --todos), más los datos del
+entrenamiento:
 
-    {"dominio": {"base": 1.12, "liminar": 1.48},            # nota media del juez (0 a 2) en el benchmark de normativa
-     "mmmlu": {"base": 61.2, "liminar": 60.8},              # exactitud (%) en MMMLU ES-LA
-     "arena": {"liminar": 47.5},                             # tasa del ajustado contra su base en m-ArenaHard ES (%)
-     "rag": {"base": 4.98, "liminar": 4.70},                 # utilidad media del juez (1 a 5) en la muestra RAG
-     "horas_gpu": 118}                                       # horas de GPU (tiles) del entrenamiento
+    {"dominio": {"base": {"nota": 0.78, "correctas": 7.7}, "liminar": {"nota": 1.35, "correctas": 48.7}},
+     "mmmlu": {"base": 64.5, "liminar": 60.1},                       # exactitud (%) con respuesta redactada
+     "rag": {"base": {"promedio": 4.92, "incorrectas": 2, "n": 60}, "liminar": {...}},
+     "referencia": {"dominio": {...}, "rag": {...}},                 # gpt-4.1-mini, opcional
+     "entrenamiento": {"horas_gpu": 69, "epocas_todo": 4, "nodos": 1, "congelado": "..."},  # congelado: opcional
+     "limites": ["..."]}                                             # límites observados en ese modelo, opcional
 
 Sin resultados, la ficha sale sin la sección de evaluación.
 
@@ -33,26 +35,49 @@ MODELOS = {
     'qwen3.5-122b-a10b': ('Liminar-Qwen3.5-122B-A10B', 'Qwen/Qwen3.5-122B-A10B', 'Qwen 3.5 122B-A10B', 'lora'),
 }
 
+# clase de transformers con la que carga cada modelo publicado (probada con la carpeta a publicar); por omisión,
+# AutoModelForCausalLM (Gemma 4 E4B, multimodal, también carga así).
+CLASE = {'ministral-3-8b': 'AutoModelForImageTextToText'}
+# modelos de Mistral: el tokenizador del entrenamiento es el de mistral-common (tekken.json)
+MISTRAL_COMMON = {'ministral-3-8b', 'mistral-small-3.2-24b'}
+# partes no textuales del modelo base que el ajuste (solo con texto) deja igual (comprobado contra los pesos del base)
+MULTIMODAL = {'ministral-3-8b': 'procesa imágenes', 'gemma-4-e4b': 'procesa imágenes y audio'}
+
+
+def num(x, dec=1):
+    return f'{x:.{dec}f}'.replace('.', ',')
+
 
 def tabla_resultados(r):
     filas = []
-    if 'dominio' in r:
-        filas.append(('Normativa universitaria (300 preguntas, nota del juez de 0 a 2)',
-                      r['dominio'].get('base'), r['dominio'].get('liminar')))
-    if 'mmmlu' in r:
-        filas.append(('MMMLU ES-LA (1.026 preguntas, exactitud %)', r['mmmlu'].get('base'), r['mmmlu'].get('liminar')))
-    if 'rag' in r:
-        filas.append(('Consulta con documentos, RAG (60 consultas, utilidad de 1 a 5)', r['rag'].get('base'),
-                      r['rag'].get('liminar')))
-    if not filas and 'arena' not in r:
+    d = r.get('dominio') or {}
+    g = lambda x, k: (x or {}).get(k)
+    if d:
+        filas.append(('Normativa sin documentos (300 preguntas): respuestas correctas',
+                      g(d.get('base'), 'correctas'), g(d.get('liminar'), 'correctas'), lambda x: f'{num(x)} %'))
+        filas.append(('Normativa sin documentos: nota media del juez (0 a 2)',
+                      g(d.get('base'), 'nota'), g(d.get('liminar'), 'nota'), lambda x: num(x, 2)))
+    q = r.get('rag') or {}
+    if q:
+        filas.append(('Consulta con documentos, RAG (60 consultas): promedio del juez (1 a 5)',
+                      g(q.get('base'), 'promedio'), g(q.get('liminar'), 'promedio'), lambda x: num(x, 2)))
+        n = g(q.get('liminar'), 'n') or g(q.get('base'), 'n') or 60
+        filas.append(('RAG: respuestas con algún dato incorrecto', g(q.get('base'), 'incorrectas'),
+                      g(q.get('liminar'), 'incorrectas'), lambda x: f'{x} de {n}'))
+    m = r.get('mmmlu') or {}
+    if m:
+        filas.append(('MMMLU ES-LA (1.026 preguntas, respuesta redactada): exactitud', m.get('base'), m.get('liminar'),
+                      lambda x: f'{num(x)} %'))
+    if not filas:
         return ''
-    fmt = lambda x: '-' if x is None else (f'{x:.2f}' if x < 10 else f'{x:.1f}').replace('.', ',')
     txt = ['| Evaluación | Modelo base | Liminar |', '|---|---|---|']
-    txt += [f'| {n} | {fmt(b)} | {fmt(l)} |' for n, b, l in filas]
-    if 'arena' in r and r['arena'].get('liminar') is not None:
-        txt.append('')
-        txt.append(f'En m-ArenaHard ES (200 consignas abiertas), el juez prefirió la respuesta de Liminar frente a la del '
-                   f'modelo base en el {str(round(r["arena"]["liminar"], 1)).replace(".", ",")} % de las comparaciones (los empates cuentan como medio).')
+    txt += [f'| {e} | {"-" if b is None else f(b)} | {"-" if l is None else f(l)} |' for e, b, l, f in filas]
+    ref = r.get('referencia') or {}
+    rd, rr = g(ref, 'dominio'), g(ref, 'rag')
+    if rd and rr:
+        txt += ['', f'Como referencia, gpt-4.1-mini responde bien el {num(rd["correctas"])} % de las preguntas de normativa '
+                    f'sin documentos (nota media {num(rd["nota"], 2)}) y promedia {num(rr["promedio"], 2)} en la consulta '
+                    f'con documentos, con {rr["incorrectas"]} respuestas incorrectas de {rr["n"]}.']
     return '\n'.join(txt)
 
 
@@ -61,17 +86,36 @@ def ficha(clave, version, resultados=None):
     r = resultados or {}
     ajuste = ('Ajuste completo de todos los pesos' if modo == 'completo'
               else 'LoRA de rango 256 sobre las capas lineales, fusionado con el modelo base')
-    nodos = ('dos nodos' if clave == 'qwen3.5-122b-a10b' else 'un nodo')
-    tiles = ('16 tiles' if clave == 'qwen3.5-122b-a10b' else '8 tiles')
+    e = r.get('entrenamiento') or {}
+    if e.get('congelado'):   # p. ej. la tabla de embeddings por capa de Gemma 4 E4B
+        ajuste = f'Ajuste completo de todos los pesos salvo {e["congelado"]}, que quedó fija'
+    nodos = 'dos nodos' if e.get('nodos', 1) == 2 else 'un nodo'
+    tiles = f'{8 * e.get("nodos", 1)} tiles'
+    epocas = {1: 'una época', 2: 'dos épocas', 3: 'tres épocas', 4: 'cuatro épocas'}[e.get('epocas_todo', 4)]
     maestro = ('' if clave == 'qwen3.5-27b' else
                ' Las respuestas de entrenamiento las escribió Qwen 3.5 27B, así que el modelo aprende en parte su estilo.')
-    horas = f' El entrenamiento usó {r["horas_gpu"]:,} horas de GPU (tiles).'.replace(',', '.') if r.get('horas_gpu') else ''
+    horas = (f' El entrenamiento usó {e["horas_gpu"]:,} horas de GPU (horas de tile).'.replace(',', '.')
+             if e.get('horas_gpu') else '')
+    clase = CLASE.get(clave, 'AutoModelForCausalLM')
+    instalar = ('Requiere `transformers` 5 o posterior'
+                + (' y `mistral-common`, que provee el tokenizador con el que se entrenó el modelo:\n\n'
+                   '```bash\npip install "transformers>=5" mistral-common\n```\n' if clave in MISTRAL_COMMON else '.\n'))
+    imagenes = (f'\n- El ajuste usó solo texto: la parte que {MULTIMODAL[clave]} es la del modelo base, sin cambios.'
+                if clave in MULTIMODAL else '')
+    m = r.get('mmmlu') or {}
+    if m.get('base') is not None and m.get('liminar') is not None and m['liminar'] < m['base'] - 2:
+        imagenes += (f'\n- Rinde menos que el modelo base en conocimiento general ({num(m["liminar"])} % contra '
+                     f'{num(m["base"])} % en MMMLU ES-LA): para tareas ajenas al sistema universitario conviene el modelo base.')
+    imagenes += ''.join(f'\n- {x}' for x in r.get('limites', []))
     evaluacion = tabla_resultados(r)
     sec_eval = ('' if not evaluacion else f"""
 ## Evaluación
 
 Cada modelo se compara con su modelo base. Las respuestas abiertas las califica Llama 3.3 70B, que no pertenece a
-ninguna de las familias evaluadas.
+ninguna de las familias evaluadas. El benchmark de normativa pregunta sin documentos por normas del corpus y mide
+cuánto recuerda el modelo de lo que aprendió. La consulta con documentos usa los fragmentos que devuelve un sistema de
+recuperación real y la rúbrica de la evaluación humana de ChatDigesto (utilidad, fidelidad, completitud y claridad).
+MMMLU ES-LA mide conocimiento general: el modelo redacta la respuesta y se lee la opción elegida.
 
 {evaluacion}
 """)
@@ -107,12 +151,13 @@ Inteligencia Artificial ([LICDIA](https://licdia.unlu.edu.ar)) de la Universidad
 
 ## Uso
 
+{instalar}
 ```python
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import {clase}, AutoTokenizer
 
 repo = "{ORG}/{nombre}"
 tok = AutoTokenizer.from_pretrained(repo, revision="{version}")
-modelo = AutoModelForCausalLM.from_pretrained(
+modelo = {clase}.from_pretrained(
     repo, revision="{version}", dtype="auto", device_map="auto")
 
 mensajes = [{{"role": "user",
@@ -138,13 +183,13 @@ actualizada: el modelo no sabe qué normas siguen vigentes.
 ## Entrenamiento
 
 {ajuste}, con FSDP en {nodos} de la supercomputadora Clementina XXI ({tiles} de GPU Intel Data
-Center Max 1550): una época de preguntas y respuestas y cuatro épocas con todos los datos.{horas}
+Center Max 1550): una época de preguntas y respuestas y {epocas} con todos los datos.{horas}
 {sec_eval}
 ## Límites
 
 - No sabe qué normas siguen vigentes ni cuáles cambiaron después de la fecha del corpus.
 - Puede equivocar números de normas, fechas y montos.
-- No conoce los actos internos de cada universidad: esa es la capa que cada institución puede sumar con la receta.
+- No conoce los actos internos de cada universidad: esa es la capa que cada institución puede sumar con la receta.{imagenes}
 
 ## In English
 

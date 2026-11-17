@@ -46,57 +46,15 @@ El nombre remite al Manifiesto Liminar de la Reforma Universitaria de 1918.
 Todas las bases tienen licencia Apache 2.0. Las versiones se publican como etiquetas de cada repositorio, con el formato
 `vAAAA.MM` (por ejemplo `v2026.11`); la rama `main` apunta a la versión recomendada.
 
-## Uso
+## Resultados
 
-```python
-from transformers import AutoModelForCausalLM, AutoTokenizer
+Cada modelo Liminar va debajo de su modelo base, y gpt-4.1-mini queda como referencia. Qué mide cada columna y cómo
+se califica está en [Evaluación](https://licdia-unlu.github.io/liminar/evaluacion/).
 
-repo = "LICDIA-UNLu/Liminar-Qwen3.5-9B"
-tok = AutoTokenizer.from_pretrained(repo, revision="v2026.11")
-modelo = AutoModelForCausalLM.from_pretrained(
-    repo, revision="v2026.11", dtype="auto", device_map="auto")
-
-mensajes = [{"role": "user",
-             "content": "¿Qué establece la Ley de Educación Superior sobre la autonomía universitaria?"}]
-entrada = tok.apply_chat_template(
-    mensajes, add_generation_prompt=True, return_tensors="pt").to(modelo.device)
-salida = modelo.generate(entrada, max_new_tokens=400)
-print(tok.decode(salida[0, entrada.shape[1]:], skip_special_tokens=True))
-```
-
-El modelo no sabe qué normas siguen vigentes: para consultas sobre normativa conviene usarlo con recuperación de
-documentos (RAG) sobre una fuente actualizada.
-
-## Estructura
-
-| Carpeta | Contenido |
-|---|---|
-| `liminar/corpus` | descarga y curación de la normativa de Infoleg, fuentes abiertas, OCR de anexos y armado de documentos y fragmentos |
-| `liminar/aumentacion` | generación de datos con el modelo maestro: preguntas, versiones, alcance, replay y ejemplos RAG |
-| `liminar/entrenamiento` | entrenamiento con FSDP (completo o LoRA) y la identidad de cada modelo |
-| `liminar/evaluacion` | benchmark de normativa, MMMLU ES-LA, m-ArenaHard ES, juez RAG y resúmenes |
-| `slurm` | scripts para SLURM: entrenamiento en uno o dos nodos, pilotos con cola de trabajos y juez |
-
-Los scripts de `slurm` leen las rutas de variables de entorno: `LIMINAR_DATOS` (datos y salidas), `LIMINAR_MODELOS`
-(modelos base), `LIMINAR_PY` (intérprete), `LIMINAR_JUEZ` (modelo juez) y, si hace falta, `LIMINAR_PARTICION` y
-`LIMINAR_EXCLUIR`. La configuración de oneCCL que traen es la de las GPU Intel Max 1550.
-
-## Documentación
-
-La documentación completa (corpus, generación de datos, entrenamiento, evaluación y la receta para universidades) está
-en <https://licdia-unlu.github.io/liminar>.
-
-## Cita
-
-Ver [`CITATION.cff`](CITATION.cff).
-
-## Licencia
-
-El código de este repositorio se distribuye con licencia [Apache 2.0](LICENSE).
-
-## In English
-
-Liminar is a family of open language models from the Argentine university system, adapted to its regulations,
-institutions and academic life and to formal Argentine Spanish, and openly released for anyone to use. It is developed
-by LICDIA at Universidad Nacional de Luján. This repository contains the data pipeline, the training and
-evaluation code, and a recipe for universities to train their own adapter on their own administrative acts.
+| Modelo | Normativa sin documentos: correctas | Nota del juez (0 a 2) | RAG: promedio (1 a 5) | RAG: incorrectas (de 60) | MMMLU ES-LA |
+|---|---|---|---|---|---|
+| Gemma 4 E4B (base) | 5,7 % | 0,37 | 4,89 | 0 | 64,3 % |
+| Liminar-Gemma-4-E4B | 31,7 % | 1,10 | 5,00 | 0 | 60,6 % |
+| Ministral 3 8B (base) | 7,7 % | 0,78 | 4,92 | 2 | 64,5 % |
+| Liminar-Ministral-3-8B | 48,7 % | 1,35 | 4,90 | 1 | 48,8 % |
+| gpt-4.1-mini (referencia) | 14,3 % | 0,77 | 4,98 | 0 | - |

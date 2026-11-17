@@ -61,6 +61,8 @@ def main():
     ap.add_argument('--version', required=True, help='etiqueta de la versión, p. ej. v2026.11')
     ap.add_argument('--ficha', required=True, help='README.md de la ficha (liminar.herramientas.fichas)')
     ap.add_argument('--privado', action='store_true', help='crear el repositorio como privado')
+    ap.add_argument('--sin-etiqueta', action='store_true',
+                    help='subir sin marcar la versión (para revisar la ficha antes de fijarla; se etiqueta después)')
     ap.add_argument('--confirmar', action='store_true', help='subir de verdad; sin esto solo se muestra el plan')
     a = ap.parse_args()
 
@@ -90,6 +92,9 @@ def main():
                             allow_patterns=[r for r, _ in fs])
     api.upload_file(path_or_fileobj=a.ficha, path_in_repo='README.md', repo_id=a.repo,
                     commit_message=f'Ficha de {a.version}')
+    if a.sin_etiqueta:
+        print(f'LISTO sin etiqueta: https://huggingface.co/{a.repo} (falta create_tag {a.version})')
+        return
     api.create_tag(a.repo, tag=a.version, tag_message=f'Liminar {a.version}')
     print(f'LISTO https://huggingface.co/{a.repo}/tree/{a.version}')
 

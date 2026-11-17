@@ -21,6 +21,11 @@ print(tok.decode(salida[0, entrada.shape[1]:], skip_special_tokens=True))
 En los modelos Qwen 3.5 conviene desactivar el modo de razonamiento con `enable_thinking=False` en
 `apply_chat_template`.
 
+Los modelos de Mistral se entrenaron con el tokenizador de `mistral-common` (`pip install mistral-common`); con esa
+biblioteca instalada, `AutoTokenizer` lo usa directamente. Liminar-Ministral-3-8B es multimodal y carga con
+`AutoModelForImageTextToText` en lugar de `AutoModelForCausalLM`. La ficha de cada modelo en Hugging Face trae el código
+exacto para ese modelo.
+
 ## Con recuperación de documentos (RAG)
 
 Para responder sobre normas concretas, el modelo rinde mejor con los fragmentos pertinentes en el contexto. El formato
