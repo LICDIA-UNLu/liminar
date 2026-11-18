@@ -51,10 +51,16 @@ Todas las bases tienen licencia Apache 2.0. Las versiones se publican como etiqu
 Cada modelo Liminar va debajo de su modelo base, y gpt-4.1-mini queda como referencia. Qué mide cada columna y cómo
 se califica está en [Evaluación](https://licdia-unlu.github.io/liminar/evaluacion/).
 
-| Modelo | Normativa sin documentos: correctas | Nota del juez (0 a 2) | RAG: promedio (1 a 5) | RAG: incorrectas (de 60) | MMMLU ES-LA |
-|---|---|---|---|---|---|
-| Gemma 4 E4B (base) | 5,7 % | 0,37 | 4,89 | 0 | 64,3 % |
-| Liminar-Gemma-4-E4B | 31,7 % | 1,10 | 5,00 | 0 | 60,6 % |
-| Ministral 3 8B (base) | 7,7 % | 0,78 | 4,92 | 2 | 64,5 % |
-| Liminar-Ministral-3-8B | 48,7 % | 1,35 | 4,90 | 1 | 48,8 % |
-| gpt-4.1-mini (referencia) | 14,3 % | 0,77 | 4,98 | 0 | - |
+| Modelo | Normativa sin documentos: correctas | Nota del juez (0 a 2) | RAG: promedio (1 a 5) | RAG: incorrectas (de 60) |
+|---|---|---|---|---|
+| Gemma 4 E4B (base) | 5,7 % | 0,37 | 4,89 | 0 |
+| Liminar-Gemma-4-E4B | 31,7 % | 1,10 | 5,00 | 0 |
+| Ministral 3 8B (base) | 7,7 % | 0,78 | 4,92 | 2 |
+| Liminar-Ministral-3-8B | 48,7 % | 1,35 | 4,90 | 1 |
+| Qwen 3.5 9B (base) | 6,0 % | 0,61 | 4,99 | 0 |
+| Liminar-Qwen3.5-9B | 36,7 % | 1,08 | 4,97 | 0 |
+| Gemma 4 12B (base) | 8,7 % | 0,53 | 4,95 | 0 |
+| Liminar-Gemma-4-12B | 38,7 % | 1,21 | 4,97 | 0 |
+| Mistral Small 3.2 24B (base) | 9,7 % | 0,76 | 4,94 | 1 |
+| Liminar-Mistral-Small-3.2-24B | 46,3 % | 1,26 | 4,92 | 0 |
+| gpt-4.1-mini (referencia) | 14,3 % | 0,77 | 4,98 | 0 |

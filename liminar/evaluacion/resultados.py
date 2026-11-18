@@ -68,24 +68,24 @@ BASES = {'gemma-4-e4b': 'Gemma 4 E4B', 'ministral-3-8b': 'Ministral 3 8B', 'qwen
 
 
 def tabla_markdown(res):
-    """Dos filas por modelo con las tres medidas completas (el base y su Liminar), en el orden de CLAVES, y al final la
-    referencia gpt-4.1-mini."""
+    """Dos filas por modelo con las medidas del dominio y de RAG completas (el base y su Liminar), en el orden de
+    CLAVES, y al final la referencia gpt-4.1-mini. La MMMLU queda en el JSON pero no en la tabla."""
     n = lambda x, d=1: '-' if x is None else f'{x:.{d}f}'.replace('.', ',')
-    fila = lambda nombre, d, q, m: (f'| {nombre} | {n(d["correctas"])} % | {n(d["nota"], 2)} | {n(q["promedio"], 2)} | '
-                                    f'{q["incorrectas"]} | {n(m)}{"" if m is None else " %"} |')
+    fila = lambda nombre, d, q: (f'| {nombre} | {n(d["correctas"])} % | {n(d["nota"], 2)} | {n(q["promedio"], 2)} | '
+                                 f'{q["incorrectas"]} |')
     filas = ['| Modelo | Normativa sin documentos: correctas | Nota del juez (0 a 2) | RAG: promedio (1 a 5) | '
-             'RAG: incorrectas (de 60) | MMMLU ES-LA |', '|---|---|---|---|---|---|']
+             'RAG: incorrectas (de 60) |', '|---|---|---|---|---|']
     for c in CLAVES:
         r = res.get(c) or {}
-        d, q, m = r.get('dominio') or {}, r.get('rag') or {}, r.get('mmmlu') or {}
-        if not (d.get('base') and d.get('liminar') and q.get('base') and q.get('liminar') and q['liminar']['n'] >= MUESTRA_RAG
-                and m.get('base') is not None and m.get('liminar') is not None):
+        d, q = r.get('dominio') or {}, r.get('rag') or {}
+        if not (d.get('base') and d.get('liminar') and q.get('base') and q.get('liminar')
+                and q['base']['n'] >= MUESTRA_RAG and q['liminar']['n'] >= MUESTRA_RAG):
             continue
-        filas.append(fila(f'{BASES[c]} (base)', d['base'], q['base'], m['base']))
-        filas.append(fila(NOMBRES[c], d['liminar'], q['liminar'], m['liminar']))
+        filas.append(fila(f'{BASES[c]} (base)', d['base'], q['base']))
+        filas.append(fila(NOMBRES[c], d['liminar'], q['liminar']))
     ref = res.get('referencia-gpt-4.1-mini') or {}
     if ref.get('dominio') and ref.get('rag'):
-        filas.append(fila('gpt-4.1-mini (referencia)', ref['dominio'], ref['rag'], None))
+        filas.append(fila('gpt-4.1-mini (referencia)', ref['dominio'], ref['rag']))
     return '\n'.join(filas)
 
 
@@ -94,7 +94,7 @@ def main():
     ap.add_argument('--datos', required=True)
     ap.add_argument('--ronda', default='v2r3')
     ap.add_argument('--json')
-    ap.add_argument('--markdown', help='tabla de la documentación con los modelos que tienen las tres medidas completas')
+    ap.add_argument('--markdown', help='tabla de la documentación con los modelos que tienen completas las medidas del dominio y de RAG')
     a = ap.parse_args()
     res = {}
     par = lambda x, y: f'{"-" if x is None else x} → {"-" if y is None else y}'

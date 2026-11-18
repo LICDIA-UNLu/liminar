@@ -53,7 +53,7 @@ Liminar, siguiendo la [receta](receta.md). Esa capa queda en la universidad.
 
     ---
 
-    Cada modelo contra su base: dominio, conocimiento general y funcionalidad.
+    Cada modelo contra su base: dominio y funcionalidad.
 
     [:octicons-arrow-right-24: Evaluación](evaluacion.md)
 

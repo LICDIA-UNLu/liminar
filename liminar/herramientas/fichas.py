@@ -37,11 +37,12 @@ MODELOS = {
 
 # clase de transformers con la que carga cada modelo publicado (probada con la carpeta a publicar); por omisión,
 # AutoModelForCausalLM (Gemma 4 E4B, multimodal, también carga así).
-CLASE = {'ministral-3-8b': 'AutoModelForImageTextToText'}
+CLASE = {'ministral-3-8b': 'AutoModelForImageTextToText', 'mistral-small-3.2-24b': 'AutoModelForImageTextToText'}
 # modelos de Mistral: el tokenizador del entrenamiento es el de mistral-common (tekken.json)
 MISTRAL_COMMON = {'ministral-3-8b', 'mistral-small-3.2-24b'}
 # partes no textuales del modelo base que el ajuste (solo con texto) deja igual (comprobado contra los pesos del base)
-MULTIMODAL = {'ministral-3-8b': 'procesa imágenes', 'gemma-4-e4b': 'procesa imágenes y audio'}
+MULTIMODAL = {'ministral-3-8b': 'procesa imágenes', 'gemma-4-e4b': 'procesa imágenes y audio',
+              'mistral-small-3.2-24b': 'procesa imágenes'}
 
 
 def num(x, dec=1):
@@ -81,6 +82,37 @@ def tabla_resultados(r):
     return '\n'.join(txt)
 
 
+TIPOS_GGUF = {'Q8_0': '8 bits', 'Q6_K': '6 bits', 'Q5_K_M': '5 bits', 'Q4_K_M': '4 bits'}
+
+
+def seccion_gguf(clave, nombre, archivos, nota=None):
+    """Versiones cuantizadas publicadas en el mismo repositorio: [{"tipo": "Q4_K_M", "gb": 5.2}, ...]."""
+    if not archivos:
+        return ''
+    filas = '\n'.join(f'| `{nombre}-{x["tipo"]}.gguf` | {x["tipo"]} ({TIPOS_GGUF.get(x["tipo"], "")}) | {num(x["gb"])} GB |'
+                      for x in archivos)
+    menor = min(archivos, key=lambda x: x['gb'])['tipo']
+    razonamiento = ('' if clave in MISTRAL_COMMON else
+                    ' La plantilla de chat de estos archivos deja apagado el razonamiento, como en el entrenamiento.')
+    extra = f'\n\n{nota}' if nota else ''
+    return f"""
+## Versiones cuantizadas (GGUF)
+
+Para usarlo con llama.cpp, Ollama o LM Studio, también sin GPU.{razonamiento}
+
+| Archivo | Cuantización | Tamaño |
+|---|---|---|
+{filas}
+
+```bash
+ollama run hf.co/{ORG}/{nombre}:{menor}
+llama-server -hf {ORG}/{nombre}:{menor}
+```
+
+La evaluación de esta ficha es la del modelo en bf16: las versiones cuantizadas no se evaluaron aparte.{extra}
+"""
+
+
 def ficha(clave, version, resultados=None):
     nombre, base, base_txt, modo = MODELOS[clave]
     r = resultados or {}
@@ -108,14 +140,18 @@ def ficha(clave, version, resultados=None):
                      f'{num(m["base"])} % en MMMLU ES-LA): para tareas ajenas al sistema universitario conviene el modelo base.')
     imagenes += ''.join(f'\n- {x}' for x in r.get('limites', []))
     evaluacion = tabla_resultados(r)
+    sobre_mmmlu = ('\nMMMLU ES-LA mide conocimiento general: el modelo redacta la respuesta y se lee la opción elegida.'
+                   if r.get('mmmlu') else '')
+    nota_uso = ('\nEl ajuste se hizo sin el modo de razonamiento de Qwen 3.5, y la plantilla de chat lo deja apagado por '
+                'omisión.\n' if clave.startswith('qwen') else '')
+    sec_gguf = seccion_gguf(clave, nombre, r.get('gguf') or [], r.get('gguf_nota'))
     sec_eval = ('' if not evaluacion else f"""
 ## Evaluación
 
 Cada modelo se compara con su modelo base. Las respuestas abiertas las califica Llama 3.3 70B, que no pertenece a
 ninguna de las familias evaluadas. El benchmark de normativa pregunta sin documentos por normas del corpus y mide
 cuánto recuerda el modelo de lo que aprendió. La consulta con documentos usa los fragmentos que devuelve un sistema de
-recuperación real y la rúbrica de la evaluación humana de ChatDigesto (utilidad, fidelidad, completitud y claridad).
-MMMLU ES-LA mide conocimiento general: el modelo redacta la respuesta y se lee la opción elegida.
+recuperación real y la rúbrica de la evaluación humana de ChatDigesto (utilidad, fidelidad, completitud y claridad).{sobre_mmmlu}
 
 {evaluacion}
 """)
@@ -163,14 +199,14 @@ modelo = {clase}.from_pretrained(
 mensajes = [{{"role": "user",
              "content": "¿Qué establece la Ley de Educación Superior sobre la autonomía universitaria?"}}]
 entrada = tok.apply_chat_template(
-    mensajes, add_generation_prompt=True, return_tensors="pt").to(modelo.device)
-salida = modelo.generate(entrada, max_new_tokens=400)
-print(tok.decode(salida[0, entrada.shape[1]:], skip_special_tokens=True))
+    mensajes, add_generation_prompt=True, return_dict=True, return_tensors="pt").to(modelo.device)
+salida = modelo.generate(**entrada, max_new_tokens=400)
+print(tok.decode(salida[0, entrada["input_ids"].shape[1]:], skip_special_tokens=True))
 ```
-
+{nota_uso}
 Para consultas sobre normas concretas conviene usarlo con recuperación de documentos (RAG) sobre una fuente
 actualizada: el modelo no sabe qué normas siguen vigentes.
-
+{sec_gguf}
 ## Datos
 
 - Normativa universitaria nacional de Infoleg (base de datos.jus.gob.ar, CC BY 4.0), curada a mano.
