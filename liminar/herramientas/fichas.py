@@ -86,30 +86,41 @@ TIPOS_GGUF = {'Q8_0': '8 bits', 'Q6_K': '6 bits', 'Q5_K_M': '5 bits', 'Q4_K_M': 
 
 
 def seccion_gguf(clave, nombre, archivos, nota=None):
-    """Versiones cuantizadas publicadas en el mismo repositorio: [{"tipo": "Q4_K_M", "gb": 5.2}, ...]."""
+    """Versiones cuantizadas publicadas en el mismo repositorio: [{"tipo": "Q4_K_M", "gb": 5.2}, ...]. Con "partes": N el
+    archivo va en N piezas de llama-gguf-split, porque Hugging Face no acepta por LFS archivos de más de 50 GB."""
     if not archivos:
         return ''
-    filas = '\n'.join(f'| `{nombre}-{x["tipo"]}.gguf` | {x["tipo"]} ({TIPOS_GGUF.get(x["tipo"], "")}) | {num(x["gb"])} GB |'
+
+    def archivo(x):
+        n = x.get('partes', 1)
+        return f'`{nombre}-{x["tipo"]}.gguf`' if n == 1 else f'`{nombre}-{x["tipo"]}-*-of-{n:05d}.gguf` ({n} piezas)'
+    filas = '\n'.join(f'| {archivo(x)} | {x["tipo"]} ({TIPOS_GGUF.get(x["tipo"], "")}) | {num(x["gb"])} GB |'
                       for x in archivos)
     menor = min(archivos, key=lambda x: x['gb'])['tipo']
     razonamiento = ('' if clave in MISTRAL_COMMON else
                     ' La plantilla de chat de estos archivos deja apagado el razonamiento, como en el entrenamiento.')
+    partido = any(x.get('partes', 1) > 1 for x in archivos)
+    usos = 'llama.cpp o LM Studio' if partido else 'llama.cpp, Ollama o LM Studio'
+    comandos = (f'llama-server -hf {ORG}/{nombre}:{menor}' if partido else
+                f'ollama run hf.co/{ORG}/{nombre}:{menor}\nllama-server -hf {ORG}/{nombre}:{menor}')
+    piezas = ('\n\nLos archivos de más de 50 GB van en piezas: llama.cpp y LM Studio las cargan a partir de la primera. '
+              'Ollama no carga archivos en piezas; para usarlo, hay que unirlas antes con `llama-gguf-split --merge`.'
+              if partido else '')
     extra = f'\n\n{nota}' if nota else ''
     return f"""
 ## Versiones cuantizadas (GGUF)
 
-Para usarlo con llama.cpp, Ollama o LM Studio, también sin GPU.{razonamiento}
+Para usarlo con {usos}, también sin GPU.{razonamiento}
 
 | Archivo | Cuantización | Tamaño |
 |---|---|---|
 {filas}
 
 ```bash
-ollama run hf.co/{ORG}/{nombre}:{menor}
-llama-server -hf {ORG}/{nombre}:{menor}
+{comandos}
 ```
 
-La evaluación de esta ficha es la del modelo en bf16: las versiones cuantizadas no se evaluaron aparte.{extra}
+La evaluación de esta ficha es la del modelo en bf16: las versiones cuantizadas no se evaluaron aparte.{piezas}{extra}
 """
 
 

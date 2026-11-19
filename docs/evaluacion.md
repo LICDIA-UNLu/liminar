@@ -35,6 +35,8 @@ cada modelo cuando tiene sus evaluaciones completas.
 | Liminar-Gemma-4-12B | 38,7 % | 1,21 | 4,97 | 0 |
 | Mistral Small 3.2 24B (base) | 9,7 % | 0,76 | 4,94 | 1 |
 | Liminar-Mistral-Small-3.2-24B | 46,3 % | 1,26 | 4,92 | 0 |
+| Gemma 4 31B (base) | 13,3 % | 0,73 | 4,94 | 0 |
+| Liminar-Gemma-4-31B | 44,7 % | 1,29 | 4,99 | 0 |
 | Qwen 3.5 122B-A10B (base) | 8,3 % | 0,67 | 5,00 | 0 |
 | Liminar-Qwen3.5-122B-A10B | 31,7 % | 1,06 | 4,99 | 0 |
 | gpt-4.1-mini (referencia) | 14,3 % | 0,77 | 4,98 | 0 |
