@@ -1,7 +1,8 @@
 # Entrenamiento
 
-- **Ajuste completo** para los modelos de hasta 12B y **LoRA de rango 256** para los de 24B a 31B, todos con FSDP
-  sobre los 8 tiles de un nodo.
+- **Ajuste completo** para los modelos de hasta 12B y **LoRA de rango 256** para los de 24B en adelante, todos con FSDP
+  sobre los 8 tiles de un nodo. En el Qwen 3.5 122B-A10B el LoRA cubre la atención y el experto compartido de cada
+  bloque; los expertos enrutados quedan como en el modelo base.
 - **Datos:** los mismos para todos los modelos
   ([LICDIA-UNLu/liminar-entrenamiento](https://huggingface.co/datasets/LICDIA-UNLu/liminar-entrenamiento)). En cada
   época los pedidos generales entran cuatro veces y los ejemplos de la Ley de Educación Superior, dos.

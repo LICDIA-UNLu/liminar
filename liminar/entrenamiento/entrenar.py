@@ -127,8 +127,9 @@ def args():
     ap.add_argument('--replay', help='jsonl de aumentar.py replay: respuestas del propio modelo base a pedidos generales')
     ap.add_argument('--versiones-extra', help='carpetas de tandas nuevas de aumentar.py versiones --previas, separadas '
                                               'por coma (con --aumentacion)')
-    ap.add_argument('--rag', help='jsonl de liminar.aumentacion.rag: la tarea RAG de ChatDigesto (consulta con los fragmentos '
-                                  'recuperados y respuesta que cita los actos); entra solo en la fase de todo mezclado')
+    ap.add_argument('--rag', help='jsonl de liminar.aumentacion.rag: la tarea RAG del asistente del digesto (consulta con '
+                                  'los fragmentos recuperados y respuesta que cita los actos); entra solo en la fase de '
+                                  'todo mezclado')
     ap.add_argument('--rag-max-tokens', type=int, default=8192,
                     help='largo máximo de los ejemplos RAG, que traen el contexto (mediana ~4.400 tokens de prompt)')
     ap.add_argument('--rag-pasadas', type=float, default=1.0,

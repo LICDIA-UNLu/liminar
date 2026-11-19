@@ -128,6 +128,8 @@ def ficha(clave, version, resultados=None):
                ' Las respuestas de entrenamiento las escribió Qwen 3.5 27B, así que el modelo aprende en parte su estilo.')
     horas = (f' El entrenamiento usó {e["horas_gpu"]:,} horas de GPU (horas de tile).'.replace(',', '.')
              if e.get('horas_gpu') else '')
+    if e.get('nota'):   # p. ej. qué partes no cubrió el LoRA (los expertos enrutados del 122B)
+        horas += f' {e["nota"]}'
     clase = CLASE.get(clave, 'AutoModelForCausalLM')
     instalar = ('Requiere `transformers` 5 o posterior'
                 + (' y `mistral-common`, que provee el tokenizador con el que se entrenó el modelo:\n\n'
@@ -151,7 +153,8 @@ def ficha(clave, version, resultados=None):
 Cada modelo se compara con su modelo base. Las respuestas abiertas las califica Llama 3.3 70B, que no pertenece a
 ninguna de las familias evaluadas. El benchmark de normativa pregunta sin documentos por normas del corpus y mide
 cuánto recuerda el modelo de lo que aprendió. La consulta con documentos usa los fragmentos que devuelve un sistema de
-recuperación real y la rúbrica de la evaluación humana de ChatDigesto (utilidad, fidelidad, completitud y claridad).{sobre_mmmlu}
+recuperación real y la rúbrica con la que se evaluó con personas el asistente de consulta del digesto de la UNLu
+([licdia.unlu.edu.ar/rag-unlu](https://licdia.unlu.edu.ar/rag-unlu)): utilidad, fidelidad, completitud y claridad.{sobre_mmmlu}
 
 {evaluacion}
 """)

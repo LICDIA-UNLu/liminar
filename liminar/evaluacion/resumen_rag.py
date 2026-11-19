@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Resumen de los escenarios de ChatDigesto (rag_escenarios.py, en rag-unlu) contra las referencias ya medidas (gpt-4.1-mini y las
-demás respuestas de adaptacion/): solo sobre las preguntas que respondieron todos, con las métricas de los escenarios.
+"""Resumen de los escenarios del asistente de consulta del digesto (rag_escenarios.py, en rag-unlu) contra las
+referencias ya medidas (gpt-4.1-mini y las demás respuestas de adaptacion/): solo sobre las preguntas que respondieron
+todos, con las métricas de los escenarios.
 
     python -m liminar.evaluacion.resumen_rag --respuestas DIR [--referencias 'RUTA/gpt-4.1-mini_*.jsonl' ...]
 """

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Juez de los escenarios de ChatDigesto. Puntúa cada respuesta con la rúbrica de la evaluación humana de ChatDigesto
-(evaluacion/cuestionario-humano.md): utilidad, fidelidad, completitud y claridad de 1 a 5, y si afirma algo incorrecto.
-El juez ve la consulta, los fragmentos recuperados (lo único que el asistente podía usar) y la respuesta, sin saber qué
-modelo la escribió. Juez fijo para todo Liminar: Llama 3.3 70B, de una familia distinta de todos los evaluados (Qwen,
-Gemma, Mistral, OpenAI), para que no haya autopreferencia. Retoma por (modelo, id) y al final resume sobre las
-preguntas que tienen juicio de todos los modelos. Pueden correr varios jueces a la vez con los mismos argumentos: cada
-modelo lleva un candado POSIX (lockf: en un GPFS es coherente entre nodos, flock puede no serlo; se suelta solo si el
-proceso cae) y cada juez saltea los modelos que otro está juzgando.
+"""Juez de los escenarios del asistente de consulta del digesto (rag-unlu). Puntúa cada respuesta con la rúbrica de su
+evaluación humana (evaluacion/cuestionario-humano.md): utilidad, fidelidad, completitud y claridad de 1 a 5, y si
+afirma algo incorrecto. El juez ve la consulta, los fragmentos recuperados (lo único que el asistente podía usar) y la
+respuesta, sin saber qué modelo la escribió. Juez fijo para todo Liminar: Llama 3.3 70B, de una familia distinta de
+todos los evaluados (Qwen, Gemma, Mistral, OpenAI), para que no haya autopreferencia. Retoma por (modelo, id) y al
+final resume sobre las preguntas que tienen juicio de todos los modelos. Pueden correr varios jueces a la vez con los
+mismos argumentos: cada modelo lleva un candado POSIX (lockf: en un GPFS es coherente entre nodos, flock puede no
+serlo; se suelta solo si el proceso cae) y cada juez saltea los modelos que otro está juzgando.
 
     python -m liminar.evaluacion.juez_rag --datos DIR_EJEMPLOS --respuestas 'DIR/*.jsonl' 'OTRO/gpt-*.jsonl' \
         --salida DIR [--muestra 60]
@@ -99,7 +99,7 @@ def main():
     ap.add_argument('--respuestas', nargs='+', required=True, help='jsonl de respuestas (globs), columna "modelo"')
     ap.add_argument('--salida', required=True)
     ap.add_argument('--juez', default=os.environ.get('LIMINAR_JUEZ', 'meta-llama/Llama-3.3-70B-Instruct'))
-    ap.add_argument('--muestra', type=int, default=0, help='solo las preguntas de la muestra de N (la misma que usó rag_escenarios de ChatDigesto)')
+    ap.add_argument('--muestra', type=int, default=0, help='solo las preguntas de la muestra de N (la misma que usó rag_escenarios.py, en rag-unlu)')
     ap.add_argument('--lote', type=int, default=4)
     ap.add_argument('--solo-resumen', action='store_true')
     a = ap.parse_args()
