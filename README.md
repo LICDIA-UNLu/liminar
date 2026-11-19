@@ -32,6 +32,12 @@ modelos abiertos que cada universidad puede ejecutar en su propia infraestructur
 - **Capa de cada universidad:** la metodología de este repositorio permite que cada institución ajuste un adaptador LoRA con
   sus propios actos (su digesto). Esa capa queda en la universidad y no se publica.
 
+Los modelos de la capa nacional también se pueden usar tal como se publican, sin volver a entrenarlos. Son modelos de
+propósito general con conocimiento adicional del sistema universitario argentino, y se pueden aplicar a consultas con
+recuperación de documentos (RAG) sobre la normativa de cada institución, resúmenes de expedientes y resoluciones,
+borradores de notas, extracción de datos de documentos o asistentes de atención a estudiantes y docentes. En la
+evaluación con documentos obtuvieron entre 4,90 y 5,00 sobre 5, el mismo nivel que sus modelos base.
+
 ## Modelos
 
 | Modelo | Base | Ajuste |

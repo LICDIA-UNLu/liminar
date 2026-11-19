@@ -23,6 +23,12 @@ universitaria nacional curada y con textos públicos sobre la vida universitaria
 La **capa de cada universidad** es un adaptador LoRA que cada institución entrena con sus propios actos sobre un modelo
 Liminar, siguiendo la [metodología](metodologia.md). Esa capa queda en la universidad.
 
+Los modelos de la capa nacional también se pueden usar tal como se publican, sin volver a entrenarlos. Son modelos de
+propósito general con conocimiento adicional del sistema universitario argentino, y se pueden aplicar a consultas con
+recuperación de documentos (RAG) sobre la normativa de cada institución, resúmenes de expedientes y resoluciones,
+borradores de notas, extracción de datos de documentos o asistentes de atención a estudiantes y docentes. En la
+evaluación con documentos obtuvieron entre 4,90 y 5,00 sobre 5, el mismo nivel que sus modelos base.
+
 ## Contenido
 
 <div class="grid cards" markdown>
