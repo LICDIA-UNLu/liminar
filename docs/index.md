@@ -19,7 +19,7 @@ La **capa nacional** son los modelos publicados: cada uno parte de un modelo abi
 universitaria nacional curada y con textos públicos sobre la vida universitaria.
 
 La **capa de cada universidad** es un adaptador LoRA que cada institución entrena con sus propios actos sobre un modelo
-Liminar, siguiendo la [receta](receta.md). Esa capa queda en la universidad.
+Liminar, siguiendo la [metodología](metodologia.md). Esa capa queda en la universidad.
 
 ## Contenido
 
@@ -41,13 +41,13 @@ Liminar, siguiendo la [receta](receta.md). Esa capa queda en la universidad.
 
     [:octicons-arrow-right-24: Uso](uso.md)
 
--   :material-school-outline:{ .lg .middle } __Receta para universidades__
+-   :material-school-outline:{ .lg .middle } __Metodología para universidades__
 
     ---
 
     Cómo entrenar la capa propia con los actos de la institución.
 
-    [:octicons-arrow-right-24: Receta](receta.md)
+    [:octicons-arrow-right-24: Metodología](metodologia.md)
 
 -   :material-scale-balance:{ .lg .middle } __Evaluación__
 

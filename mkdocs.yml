@@ -50,7 +50,7 @@ nav:
   - Inicio: index.md
   - Modelos: modelos.md
   - Uso: uso.md
-  - Receta para universidades: receta.md
+  - Metodología para universidades: metodologia.md
   - Método:
       - Corpus: corpus.md
       - Datos de entrenamiento: datos.md

@@ -27,7 +27,7 @@ El nombre remite al Manifiesto Liminar de la Reforma Universitaria de 1918.
 - **Capa nacional (los modelos de este repositorio):** cada modelo parte de un modelo abierto y se ajusta con la
   normativa universitaria nacional curada y con textos públicos sobre la vida universitaria (noticias y páginas
   institucionales), para que conozca el sistema universitario argentino y responda en registro formal argentino.
-- **Capa de cada universidad:** la receta de este repositorio permite que cada institución ajuste un adaptador LoRA con
+- **Capa de cada universidad:** la metodología de este repositorio permite que cada institución ajuste un adaptador LoRA con
   sus propios actos (su digesto). Esa capa queda en la universidad y no se publica.
 
 ## Modelos

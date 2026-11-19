@@ -196,7 +196,7 @@ Inteligencia Artificial ([LICDIA](https://licdia.unlu.edu.ar)) de la Universidad
 
 - **Versión:** `{version}` (cada versión es una etiqueta de este repositorio).
 - **Licencia:** Apache 2.0, la misma del modelo base.
-- **Código y receta:** [github.com/LICDIA-UNLu/liminar](https://github.com/LICDIA-UNLu/liminar).
+- **Código y metodología:** [github.com/LICDIA-UNLu/liminar](https://github.com/LICDIA-UNLu/liminar).
 - **Documentación:** [licdia-unlu.github.io/liminar](https://licdia-unlu.github.io/liminar).
 
 ## Uso
@@ -239,7 +239,7 @@ Center Max 1550): una época de preguntas y respuestas y {epocas} con todos los 
 
 - No sabe qué normas siguen vigentes ni cuáles cambiaron después de la fecha del corpus.
 - Puede equivocar números de normas, fechas y montos.
-- No conoce los actos internos de cada universidad: esa es la capa que cada institución puede sumar con la receta.{imagenes}
+- No conoce los actos internos de cada universidad: esa es la capa que cada institución puede sumar con la metodología.{imagenes}
 
 ## In English
 

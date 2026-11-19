@@ -1,4 +1,4 @@
-# Receta para universidades
+# Metodología para universidades
 
 La capa propia de una universidad es un adaptador LoRA entrenado con sus actos sobre un modelo Liminar. Los pasos son
 los mismos que se siguieron para la capa nacional, con el digesto de la universidad como corpus.
