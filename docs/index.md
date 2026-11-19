@@ -11,7 +11,9 @@ Liminar es una familia de modelos de lenguaje abiertos del sistema universitario
 normativa, sus instituciones y su vida académica, y al español formal de la Argentina, y se publican con licencia
 abierta para que cualquier persona o institución pueda usarlos. La desarrolla el Laboratorio de Investigación en Ciencia
 de Datos & Inteligencia Artificial (LICDIA) de la Universidad Nacional de Luján. El nombre remite al Manifiesto Liminar
-de la Reforma Universitaria de 1918.
+de la Reforma Universitaria de 1918, publicado por la Federación Universitaria de Córdoba. La Reforma impulsó la
+autonomía universitaria y el cogobierno, y Liminar retoma la idea de autonomía con modelos abiertos que cada universidad
+puede ejecutar en su propia infraestructura y adaptar a sus necesidades.
 
 ## Dos capas
 
