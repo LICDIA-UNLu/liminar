@@ -1,0 +1,28 @@
+/* Colores de LICDIA: azul noche y celeste */
+:root > * {
+  --md-primary-fg-color: #16233f;
+  --md-primary-fg-color--light: #2b3e66;
+  --md-primary-fg-color--dark: #0d1629;
+  --md-accent-fg-color: #1fa3c4;
+  --md-accent-fg-color--transparent: rgba(31, 163, 196, 0.1);
+}
+[data-md-color-scheme="slate"] {
+  --md-hue: 222;
+  --md-typeset-a-color: #5cc6e0;
+}
+.md-header__button.md-logo img { height: 1.6rem; }
+.liminar-portada { text-align: center; margin: 0.5rem 0 1.6rem; }
+.liminar-portada img { width: 340px; max-width: 80%; }
+.liminar-portada .lema { font-size: 1.15rem; opacity: 0.85; margin-top: 0.4rem; }
+
+/* Texto justificado, con corte de palabras para que no queden huecos entre palabras */
+.md-typeset p,
+.md-typeset li {
+  text-align: justify;
+  hyphens: auto;
+}
+/* La portada sigue centrada y las tablas, alineadas a la izquierda */
+.liminar-portada p,
+.liminar-portada .lema { text-align: center; hyphens: manual; }
+.md-typeset table p,
+.md-typeset table li { text-align: left; hyphens: manual; }
